@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sophie Bluel - Architecte d'intérieur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./assets/style.css">
+    <script defer src="index.js"></script>
+</head>
+<body>
+<header>
+    <div id="topBar">
+        <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+        <span>Mode Édition</span>
+    </div>
+    <div id="myModal" class="modal">
+        <!-- Page 1 Content -->
+        <div id="page1" class="modal-page active">
+            <div class="fermer">
+                <span class="close">&times;</span>
+            </div>
+            <h3>Galerie photo</h3>
+            <div id="modalGalleryContainer">
+                <div id="modalGallery" class="gallery"></div>
+            </div>
+            <hr class="esthetic-line">
+            <button id="goToPage2">Ajouter une photo</button>
+        </div>
+
+        <!-- Page 2 Content -->
+        <form id="page2" class="modal-page hidden" action="http://localhost:5678/api/works" method="post">
+            <div class="fermer">
+                <button id="leftArrow" class="arrow-left">&lt;</button>
+                <span class="close">&times;</span>
+            </div>
+            <h3>Ajout photo</h3>
+            <div class="photo" id="photo">
+                <span id="imagePreview"></span>
+                <input type="file" id="imagefile" name="image" hidden>
+                <i class="fa-regular fa-image" id="icon"></i>
+                <label for="imagefile" class="custom-file-upload" id="uploadLabel">+ Ajouter photo</label>
+                <span class="mo" id="fileInfo">jpg, png : 4mo max</span>
+            </div>            
+            <p>Title</p>
+            <input type="text" id="titleInput" name="title">
+            <p>Catégorie</p>
+            <select id="categoryInput" name="category">
+            </select>
+            <hr class="esthetic-line">
+            <button type="submit" id="editionButton">Valider</button>
+        </form>
+    </div>
+    
+    <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">projets</a></li>
+            <li>contact</li>
+            <li><a href="login.html">Login</a></li>
+            <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <section id="introduction">
+        <figure>
+            <img src="./assets/images/sophie-bluel.png" alt="">
+        </figure>
+        <article>
+            <h2>Designer d'espace</h2>
+            <p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
+            <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+            <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
+        </article>
+    </section>
+    <section id="portfolio">
+        <div class="projet">
+            <h2>Mes Projets</h2>
+            <button id="ModalButton"><span><i class="fa-solid fa-pen-to-square" style="color: #000000;"></i>modifier</span></button>
+        </div>
+        <div id="categoryButtons"></div>
+        <div class="gallery" id="mainGallery"></div>
+    </section>
+    <section id="contact">
+        <h2>Contact</h2>
+        <p>Vous avez un projet ? Discutons-en !</p>
+        <form action="#" method="post">
+            <label for="name">Nom</label>
+            <input type="text" name="name" id="name">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+            <label for="message">Message</label>
+            <textarea name="message" id="message" cols="30" rows="10"></textarea>
+            <input type="submit" value="Envoyer">
+        </form>
+    </section>
+</main>
+
+<footer>
+    <nav>
+        <ul>
+            <li>Mentions Légales</li>
+        </ul>
+    </nav>
+</footer>
+</body>
+</html>
