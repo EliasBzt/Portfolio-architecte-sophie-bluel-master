@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const worksUrl = 'http://localhost:5678/api/works';
     const categoriesUrl = 'http://localhost:5678/api/categories';
+    const logoutButton = document.getElementById('logoutButton');
+    const loginButton = document.querySelector('nav ul li a[href="login.html"]');
 
     async function fetchData(url) {
         const response = await fetch(url);
@@ -85,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-
     async function loadWorksAndCategories() {
         try {
             const [worksData, categoriesData] = await Promise.all([
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ]);
 
             const categoryButtonsContainer = document.getElementById('categoryButtons');
-            
+
             // Vérifier si le token est présent
             if (!localStorage.getItem('token')) {
                 const allCategoryButton = document.createElement('button');
@@ -120,6 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 firstButton.click();
             } else {
                 updateGallery(worksData); // Si l'utilisateur est connecté, afficher toutes les œuvres
+                categoryButtonsContainer.style.display = 'none'; // Masquer les boutons de filtre
             }
 
             populateCategorySelect(categoriesData); // Appel pour remplir le <select> avec les catégories
@@ -148,9 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const loginForm = document.getElementById('loginForm');
-    const errorMessage = document.getElementById('error-message');
-
     function displayTopBar() {
         const topBar = document.getElementById("topBar");
         topBar.style.display = "block";
@@ -161,28 +160,33 @@ document.addEventListener('DOMContentLoaded', function() {
         modalButton.style.display = "block";
     }
 
+    function displayLogoutButton() {
+        if (localStorage.getItem('token')) {
+            logoutButton.style.display = 'block';
+            loginButton.style.display = 'none';
+        } else {
+            logoutButton.style.display = 'none';
+            loginButton.style.display = 'block';
+        }
+    }
+
     if (localStorage.getItem('token')) {
         displayTopBar();
         displayEditButton();
     }
 
     loadWorksAndCategories();
+    displayLogoutButton();
+
+    logoutButton.addEventListener('click', function() {
+        localStorage.removeItem('token');
+        displayLogoutButton();
+        window.location.href = 'login.html'; // Rediriger vers la page de connexion après déconnexion
+    });
 
     const editionButton = document.getElementById('editionButton');
     const imagePreview = document.getElementById('imagePreview');
     const imagefile = document.getElementById('imagefile');
-    
-    if (imagefile) {
-        imagefile.addEventListener('change', function(){
-            console.log("changement de l'image en cours")
-            const file = this.files[0];
-
-            if (file){
-                let imageURL = URL.createObjectURL(file);
-                imagePreview.innerHTML = `<img src="${imageURL}" alt="photo a envoyer">`
-            }
-        });
-    }
 
     if (editionButton) {
         editionButton.addEventListener('click', function(event) {
@@ -211,7 +215,10 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 console.log('Nouvel élément créé :', data);
-                window.location.reload();
+                const modal = document.getElementById('myModal');
+                modal.style.display = 'none';
+                loadWorksAndCategories();
+                resetModal();
             })
             .catch(error => {
                 console.error('Erreur lors de la création du nouvel élément :', error.message);
@@ -226,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById("myModal");
             modal.style.display = "none";
             loadWorksAndCategories();
+            resetModal();
         }
     });
 
@@ -234,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target == modal) {
             modal.style.display = "none";
             loadWorksAndCategories();
+            resetModal();
         }
     }
 
@@ -271,29 +280,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-document.addEventListener('DOMContentLoaded', function() {
-    const imagefile = document.getElementById('imagefile');
-    const imagePreview = document.getElementById('imagePreview');
-    const icon = document.getElementById('icon');
-    const uploadLabel = document.getElementById('uploadLabel');
-    const fileInfo = document.getElementById('fileInfo');
 
-    imagefile.addEventListener('change', function(){
-        console.log("changement de l'image en cours");
-        const file = this.files[0];
-
-        if (file) {
-            const imageURL = URL.createObjectURL(file);
-            imagePreview.innerHTML = `<img src="${imageURL}" alt="photo à envoyer" class="preview-image">`;
-
-            // Masquer les éléments
-            icon.style.display = 'none';
-            uploadLabel.style.display = 'none';
-            fileInfo.style.display = 'none';
-        }
-    });
-});
-
+// prévisualisation de l'image et de vérification des champs 
 document.addEventListener('DOMContentLoaded', function() {
     const imagefile = document.getElementById('imagefile');
     const imagePreview = document.getElementById('imagePreview');
@@ -333,3 +321,12 @@ document.addEventListener('DOMContentLoaded', function() {
     titleInput.addEventListener('input', checkFields);
     categoryInput.addEventListener('change', checkFields);
 });
+function resetModal() {
+    document.getElementById('titleInput').value = '';
+    document.getElementById('categoryInput').value = '';
+    imagefile.value = '';
+    imagePreview.innerHTML = '';
+    icon.style.display = 'block';
+    uploadLabel.style.display = 'flex';
+    fileInfo.style.display = 'block';
+}

@@ -91,18 +91,35 @@ nav ul {
 
 }
 nav li {
-	padding: 0 10px;
 	font-size: 1.2em;
 	text-decoration: none;
 }
-ul li a {
+
+.nav {
+	padding-right: 20px;
+}
+
+.insta {
+	padding-left: 20px;
+}
+
+ul li a, ul li button {
     text-decoration: none; 
     color: black; 
 }
 
-li:hover, ul li a:hover  {
+li:hover, ul li a:hover, li button:hover  {
 	color: #B1663C;
+	cursor: pointer;
 }
+
+#logoutButton {
+	background-color: #FFFEF8;
+	border: none;
+	font: inherit;
+
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
